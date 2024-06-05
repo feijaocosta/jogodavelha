@@ -1,0 +1,21 @@
+#board {
+    border: thin solid red;
+    width: 420px;
+    height: 420px;
+    overflow: hidden;
+  }
+  
+  .casinha {
+    width: 135px;
+    height: 135px;
+    border: thin solid;
+    float: left;
+    text-align:center;
+    line-height: 135px;
+    font-size:80px;
+  }
+  
+  .gray {
+    background: black;
+    color: #ffffff;
+  }
