@@ -3,6 +3,7 @@ const casinhas = board.getElementsByTagName("div")
 const boxVencedor = document.getElementById("vencedor")
 
 let jogadas = 0;
+let jogoAtivo = true; 
 
 for (let i=0; i<casinhas.length; i++) {
   console.log(casinhas[i])
@@ -10,6 +11,8 @@ for (let i=0; i<casinhas.length; i++) {
 }
 
 function casinhaclick() {
+    if (!jogoAtivo) return;
+
     if(this.innerHTML == "") {
         if(jogadas%2 == 0) {
             this.innerHTML = "X";
@@ -25,23 +28,24 @@ function casinhaclick() {
 
 function verificaGanhador() {
     //validando na horizontal
+    let vencedor = "";
     if(casinhas[0].innerHTML == casinhas[1].innerHTML 
         && casinhas[1].innerHTML == casinhas[2].innerHTML
         && casinhas[1].innerHTML != ""
     ) {
-        boxVencedor.innerHTML = "O '" + casinhas[0].innerHTML + "' Venceu!"
+        vencedor = casinhas[0].innerHTML
     }
     if(casinhas[3].innerHTML == casinhas[4].innerHTML
         && casinhas[4].innerHTML == casinhas[5].innerHTML
         && casinhas[3].innerHTML != ""
     ) {
-        alert("O '" + casinhas[3].innerHTML + "' Venceu!")
+        vencedor = casinhas[3].innerHTML;
     }
     if(casinhas[6].innerHTML == casinhas[7].innerHTML
         && casinhas[7].innerHTML == casinhas[8].innerHTML
         && casinhas[6].innerHTML != ""
     ) {
-        alert("O '" + casinhas[6].innerHTML + "' Venceu!")
+        vencedor = casinhas[6].innerHTML;
     }
 
     //validando na vertical
@@ -49,19 +53,19 @@ function verificaGanhador() {
         && casinhas[3].innerHTML == casinhas[6].innerHTML
         && casinhas[0].innerHTML != ""
     ) {
-        alert("O '" + casinhas[0].innerHTML + "' Venceu!")
+        vencedor = casinhas[0].innerHTML;
     }
     if(casinhas[1].innerHTML == casinhas[4].innerHTML 
         && casinhas[4].innerHTML == casinhas[7].innerHTML
         && casinhas[1].innerHTML != ""
     ) {
-        alert("O '" + casinhas[1].innerHTML + "' Venceu!")
+        vencedor = casinhas[1].innerHTML;
     }
     if(casinhas[2].innerHTML == casinhas[5].innerHTML 
         && casinhas[5].innerHTML == casinhas[8].innerHTML
         && casinhas[2].innerHTML != ""
     ) {
-        alert("O '" + casinhas[2].innerHTML + "' Venceu!")
+        vencedor = casinhas[2].innerHTML;
     }
 
     //validando na diagonal
@@ -69,12 +73,26 @@ function verificaGanhador() {
         && casinhas[4].innerHTML == casinhas[8].innerHTML
         && casinhas[0].innerHTML != ""
     ) {
-        alert("O '" + casinhas[0].innerHTML + "' Venceu!")
+        vencedor = casinhas[0].innerHTML;
     }
     if(casinhas[2].innerHTML == casinhas[4].innerHTML
         && casinhas[4].innerHTML == casinhas[6].innerHTML
         && casinhas[2].innerHTML != ""
     ) {
-        alert("O '" + casinhas[2].innerHTML + "' Venceu!")
+        vencedor = casinhas[2].innerHTML;
     }
+
+    if(vencedor) {
+        jogoAtivo = false;
+        boxVencedor.innerHTML = "O '" + vencedor + "' Venceu!";
+    }
+}
+
+function reiniciarJogo() {
+    for (let i = 0; i < casinhas.length; i++) {
+        casinhas[i].innerHTML = "";
+    }
+    boxVencedor.innerHTML = "";
+    jogoAtivo = true;
+    jogadas = 0;
 }
