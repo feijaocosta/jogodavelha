@@ -1,98 +1,69 @@
-const board = document.getElementById("board")
-const casinhas = board.getElementsByTagName("div")
-const boxVencedor = document.getElementById("vencedor")
+const board = document.getElementById("board");
+const casinhas = board.getElementsByClassName("casinha");
+const boxVencedor = document.getElementById("vencedor");
+const overlay = document.getElementById("overlay");
 
 let jogadas = 0;
-let jogoAtivo = true; 
+let jogoAtivo = true;
 
-for (let i=0; i<casinhas.length; i++) {
-  console.log(casinhas[i])
-  casinhas[i].addEventListener('click', casinhaclick)
+// Adiciona evento de clique a todas as casinhas
+for (let casinha of casinhas) {
+  casinha.addEventListener("click", casinhaClick);
 }
 
-function casinhaclick() {
-    if (!jogoAtivo) return;
+// Função para lidar com o clique em uma casinha
+function casinhaClick() {
+  if (!jogoAtivo || this.innerHTML !== "") return;
 
-    if(this.innerHTML == "") {
-        if(jogadas%2 == 0) {
-            this.innerHTML = "X";
-        }else{
-            this.innerHTML = "O";
-        }
-        jogadas +=1;    
-    }
-    if(jogadas >=5){
-        verificaGanhador()
-    }
+  this.innerHTML = jogadas % 2 === 0 ? "X" : "O";
+  jogadas++;
+
+  if (jogadas >= 5) {
+    verificaResultado();
+  }
 }
 
-function verificaGanhador() {
-    //validando na horizontal
-    let vencedor = "";
-    if(casinhas[0].innerHTML == casinhas[1].innerHTML 
-        && casinhas[1].innerHTML == casinhas[2].innerHTML
-        && casinhas[1].innerHTML != ""
-    ) {
-        vencedor = casinhas[0].innerHTML
-    }
-    if(casinhas[3].innerHTML == casinhas[4].innerHTML
-        && casinhas[4].innerHTML == casinhas[5].innerHTML
-        && casinhas[3].innerHTML != ""
-    ) {
-        vencedor = casinhas[3].innerHTML;
-    }
-    if(casinhas[6].innerHTML == casinhas[7].innerHTML
-        && casinhas[7].innerHTML == casinhas[8].innerHTML
-        && casinhas[6].innerHTML != ""
-    ) {
-        vencedor = casinhas[6].innerHTML;
-    }
+// Função para verificar o resultado do jogo
+function verificaResultado() {
+  const linhasVitoria = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Linhas
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Colunas
+    [0, 4, 8], [2, 4, 6] // Diagonais
+  ];
 
-    //validando na vertical
-    if(casinhas[0].innerHTML == casinhas[3].innerHTML
-        && casinhas[3].innerHTML == casinhas[6].innerHTML
-        && casinhas[0].innerHTML != ""
-    ) {
-        vencedor = casinhas[0].innerHTML;
+  for (let linha of linhasVitoria) {
+    const [a, b, c] = linha;
+    if (casinhas[a].innerHTML !== "" &&
+        casinhas[a].innerHTML === casinhas[b].innerHTML &&
+        casinhas[b].innerHTML === casinhas[c].innerHTML) {
+      mostraResultado(casinhas[a].innerHTML);
+      return;
     }
-    if(casinhas[1].innerHTML == casinhas[4].innerHTML 
-        && casinhas[4].innerHTML == casinhas[7].innerHTML
-        && casinhas[1].innerHTML != ""
-    ) {
-        vencedor = casinhas[1].innerHTML;
-    }
-    if(casinhas[2].innerHTML == casinhas[5].innerHTML 
-        && casinhas[5].innerHTML == casinhas[8].innerHTML
-        && casinhas[2].innerHTML != ""
-    ) {
-        vencedor = casinhas[2].innerHTML;
-    }
+  }
 
-    //validando na diagonal
-    if(casinhas[0].innerHTML == casinhas[4].innerHTML 
-        && casinhas[4].innerHTML == casinhas[8].innerHTML
-        && casinhas[0].innerHTML != ""
-    ) {
-        vencedor = casinhas[0].innerHTML;
-    }
-    if(casinhas[2].innerHTML == casinhas[4].innerHTML
-        && casinhas[4].innerHTML == casinhas[6].innerHTML
-        && casinhas[2].innerHTML != ""
-    ) {
-        vencedor = casinhas[2].innerHTML;
-    }
-
-    if(vencedor) {
-        jogoAtivo = false;
-        boxVencedor.innerHTML = "O '" + vencedor + "' Venceu!";
-    }
+  if (jogadas === 9) {
+    mostraResultado("Empate");
+  }
 }
 
+// Função para mostrar o resultado (vitória ou empate)
+function mostraResultado(resultado) {
+  jogoAtivo = false;
+  if (resultado === "Empate") {
+    boxVencedor.innerHTML = "Deu velha!";
+  } else {
+    boxVencedor.innerHTML = `O '${resultado}' Venceu!`;
+  }
+  overlay.classList.add("visible");
+}
+
+// Função para reiniciar o jogo
 function reiniciarJogo() {
-    for (let i = 0; i < casinhas.length; i++) {
-        casinhas[i].innerHTML = "";
-    }
-    boxVencedor.innerHTML = "";
-    jogoAtivo = true;
-    jogadas = 0;
+  for (let casinha of casinhas) {
+    casinha.innerHTML = "";
+  }
+  boxVencedor.innerHTML = "";
+  overlay.classList.remove("visible");
+  jogoAtivo = true;
+  jogadas = 0;
 }

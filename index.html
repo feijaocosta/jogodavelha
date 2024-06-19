@@ -11,19 +11,21 @@
         <h1>Jogo da Velha</h1>
         <div id="board">
             <!-- criar 9 casinhas -->
-            <div class="casinha"></div>
-            <div class="casinha gray"></div>
-            <div class="casinha"></div>
-            <div class="casinha gray"></div>
-            <div class="casinha"></div>
-            <div class="casinha gray"></div>
-            <div class="casinha"></div>
-            <div class="casinha gray"></div>
-            <div class="casinha"></div>
+            <div class="casinha" data-index="0"></div>
+            <div class="casinha gray" data-index="1"></div>
+            <div class="casinha" data-index="2"></div>
+            <div class="casinha gray" data-index="3"></div>
+            <div class="casinha" data-index="4"></div>
+            <div class="casinha gray" data-index="5"></div>
+            <div class="casinha" data-index="6"></div>
+            <div class="casinha gray" data-index="7"></div>
+            <div class="casinha" data-index="8"></div>
         </div>
         <div id="overlay">
-            <div id="vencedor"></div>
-            <button onclick="reiniciarJogo()">Reiniciar Jogo</button>
+            <div id="overlay-content">
+                <div id="vencedor"></div><br><br>
+                <button onclick="reiniciarJogo()">Reiniciar Jogo</button>
+            </div>
         </div>
     </div>
     <script src="jogodavelha.js"></script>
